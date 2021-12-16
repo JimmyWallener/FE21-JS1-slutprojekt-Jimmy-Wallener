@@ -1,0 +1,45 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+body {
+  background: url('https://picsum.photos/id/1036/1200/800');
+  background-attachment: fixed;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  height: 100vh;
+}
+
+.widgets {
+  border-radius: 1em;
+  background: #39393ba4;
+}
+
+.card {
+  border-radius: 1.5em;
+}
+
+.fas {
+  color: #ddd;
+}
+
+.text-muted {
+  font-size: 0.65rem;
+}
+
+.copy {
+  color: whitesmoke;
+}
+
+@media only screen and (max-width: 450px) {
+  .forecast,
+  .copy {
+    font-size: 50%;
+  }
+  .small-icon {
+    width: 45px;
+  }
+}
