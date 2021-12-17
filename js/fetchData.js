@@ -1,7 +1,7 @@
 export const getDailyData = async (city = 'Stockholm') => {
   // getting apikey from external json file
-  const { apikey } = await (await fetch('./config/config.json')).json();
-  const url = `https://api.weatherbit.io/v2.0/forecast/daily?city=${city}&key=${apikey}&lang=sv&days=6`;
+  const { weatherkey } = await (await fetch('./config/config.json')).json();
+  const url = `https://api.weatherbit.io/v2.0/forecast/daily?city=${city}&key=${weatherkey}&lang=sv&days=6`;
   let response = await fetch(url);
   if (response.status != 200) {
     return response.statusText;
@@ -11,8 +11,8 @@ export const getDailyData = async (city = 'Stockholm') => {
 };
 
 export const getCurrentWeather = async (city = 'Stockholm') => {
-  const { apikey } = await (await fetch('./config/config.json')).json();
-  const url = `https://api.weatherbit.io/v2.0/current?city=${city}&include=minutely&key=${apikey}&lang=sv`;
+  const { weatherkey } = await (await fetch('./config/config.json')).json();
+  const url = `https://api.weatherbit.io/v2.0/current?city=${city}&include=minutely&key=${weatherkey}&lang=sv`;
   let response = await fetch(url);
   if (response.status != 200) {
     if (response.statusText === 'No Content') {

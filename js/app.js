@@ -27,8 +27,17 @@ $(function () {
   });
   const createWeatherCard = async (currentWeather) => {
     // Deconstructing json fields
-    const { city_name, weather, country_code, rh, wind_spd, wind_cdir_full } =
-      currentWeather.data[0];
+    const {
+      city_name,
+      weather,
+      country_code,
+      rh,
+      wind_spd,
+      wind_cdir_full,
+      lon,
+      lat,
+    } = currentWeather.data[0];
+    initGoogleMap(lat, lon);
 
     // adding data to first card:
     $('#temp').text(`${Math.round(currentWeather.minutely[0].temp)}°C`);
@@ -67,5 +76,16 @@ $(function () {
           
            `);
     }
+  };
+  const initGoogleMap = (lat, long) => {
+    const cords = { lat: parseInt(lat), lng: parseInt(long) };
+    const map = new google.maps.Map(document.getElementById('map'), {
+      zoom: 8,
+      center: cords,
+    });
+    const marker = new google.maps.Marker({
+      position: cords,
+      map: map,
+    });
   };
 });
