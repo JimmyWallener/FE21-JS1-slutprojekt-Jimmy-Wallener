@@ -77,6 +77,8 @@ $(function () {
            `);
     }
   };
+
+  // getting map data based on lat/long from weather api, and creates a marker on said map
   const initGoogleMap = (lat, long) => {
     const cords = { lat: parseInt(lat), lng: parseInt(long) };
     const map = new google.maps.Map(document.getElementById('map'), {
