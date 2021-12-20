@@ -1,4 +1,4 @@
-export const getDailyData = async (city = 'Stockholm') => {
+export const getDailyData = async (city) => {
   // getting apikey from external json file
   const { weatherkey } = await (await fetch('./config/config.json')).json();
   const url = `https://api.weatherbit.io/v2.0/forecast/daily?city=${city}&key=${weatherkey}&lang=sv&days=6`;
@@ -10,7 +10,7 @@ export const getDailyData = async (city = 'Stockholm') => {
   }
 };
 
-export const getCurrentWeather = async (city = 'Stockholm') => {
+export const getCurrentWeather = async (city) => {
   const { weatherkey } = await (await fetch('./config/config.json')).json();
   const url = `https://api.weatherbit.io/v2.0/current?city=${city}&include=minutely&key=${weatherkey}&lang=sv`;
   let response = await fetch(url);
