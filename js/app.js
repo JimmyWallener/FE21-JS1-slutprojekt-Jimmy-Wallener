@@ -1,16 +1,32 @@
-import { getDailyData, getCurrentWeather } from './fetchData.js';
+import Connect from './Connect.js';
 
 $(function () {
   // Setting up api to load at same time
-  const getWeatherData = (city) => {
-    Promise.all([getCurrentWeather(city), getDailyData(city)]).then((data) => {
-      createWeatherCard(data[0]);
-      fiveDayForecast(data[1]);
-    });
-  };
+  const getWeatherData = (city, unit) => {
+    const currentUrl = 'https://api.weatherbit.io/v2.0/current';
+    const dailyUrl = 'https://api.weatherbit.io/v2.0/forecast/daily';
 
+    let currentWeather = new Connect(currentUrl, city, true, unit);
+    let dailyWeather = new Connect(dailyUrl, city, false, unit);
+
+    Promise.all([currentWeather.fetchApi(), dailyWeather.fetchApi()]).then(
+      (data) => {
+        createWeatherCard(data[0], unit);
+        fiveDayForecast(data[1], unit);
+      }
+    );
+  };
+  // Depending on user selection on metric or imperial, function returns value based from ternary operator as object.
+  const setUnit = (unit) => {
+    const temp = unit === 'I' ? 'F' : unit === 'S' ? 'K' : '°C';
+    const speed = unit === 'I' ? 'mph' : 'm/s';
+    return {
+      _temp: temp,
+      _speed: speed,
+    };
+  };
   // Setting a default city for cards
-  getWeatherData('Stockholm, SE');
+  getWeatherData('Stockholm,SE');
 
   // Clickevent for search field
   $('#search').click((e) => {
@@ -19,13 +35,14 @@ $(function () {
     // Start with capturing user search input
     const city = $('#search-field').val();
     $('#search-field').val('');
+    const unit = $('input[name="unit"]:checked').val();
 
     // If the input field holds value, fetch apidata
     if (!city == '') {
-      getWeatherData(city);
+      getWeatherData(city, unit);
     }
   });
-  const createWeatherCard = async (currentWeather) => {
+  const createWeatherCard = async (currentWeather, unit) => {
     // Deconstructing json fields
     const {
       city_name,
@@ -40,7 +57,9 @@ $(function () {
     initGoogleMap(lat, lon);
 
     // adding data to first card:
-    $('#temp').text(`${Math.round(currentWeather.minutely[0].temp)}°C`);
+    $('#temp').text(
+      `${Math.round(currentWeather.minutely[0].temp)} ${setUnit(unit)._temp}`
+    );
     $('#loc').text(`${city_name}, ${country_code}`);
     $('#weather-icon').attr({
       src: `https://www.weatherbit.io/static/img/icons/${weather.icon}.png`,
@@ -48,13 +67,15 @@ $(function () {
     });
     $('#desc').text(`${weather.description}`);
     $('#wind').text(
-      `Vindhastighet: ${wind_spd.toFixed(1)} m/s (${wind_cdir_full})`
+      `Vindhastighet: ${wind_spd.toFixed(1)} ${
+        setUnit(unit)._speed
+      } (${wind_cdir_full})`
     );
     $('#moist').text(`Luftfuktighet: ${rh.toFixed(1)}%`);
 
     $('#error-message').text('');
   };
-  const fiveDayForecast = async (forecast) => {
+  const fiveDayForecast = async (forecast, unit) => {
     // Begin by removing previous <div> or it will multiply
     $('.daily').remove();
     // getting data for the next 5 days
@@ -66,7 +87,9 @@ $(function () {
           <div class="flex-column daily">
           <p class="text forecast fw-bold">${datetime}</p>
           <i class="fas fa-sun fa-2x mb-3"></i>
-          <p class="text-muted forecast fw-bold">${Math.round(temp)} °C </p>
+          <p class="text-muted forecast fw-bold">${Math.round(temp)} ${
+        setUnit(unit)._temp
+      } </p>
           <i class="fas fa-sun fa-2x mb-3"></i>
           <p class="text-muted forecast fw-bold">${weather.description}</p>
           <i class="fas fa-sun fa-2x mb-3"></i>

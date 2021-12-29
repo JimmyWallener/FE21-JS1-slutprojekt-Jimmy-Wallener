@@ -30,7 +30,37 @@
                     aria-describedby="search"
                     id="search-field"
                   />
-
+                  <p class="d-flex flex-column">
+                    <span>
+                      <label for="metric" class="form-label fw-bolder"
+                        >Metric (°C, Km)</label
+                      >
+                      <input
+                        type="radio"
+                        id="metric"
+                        name="unit"
+                        value="M"
+                        checked="checked"
+                      />
+                    </span>
+                    <span>
+                      <label for="imperial" class="form-label fw-bolder"
+                        >Imperial (F, Mph)</label
+                      >
+                      <input type="radio" id="imperial" name="unit" value="I" />
+                    </span>
+                    <span>
+                      <label for="scientific" class="form-label fw-bolder"
+                        >Scientific (Kelvin, m/s)</label
+                      >
+                      <input
+                        type="radio"
+                        id="scientific"
+                        name="unit"
+                        value="S"
+                      />
+                    </span>
+                  </p>
                   <br />
                   <br />
                   <button type="submit" class="btn btn-dark" id="search">
