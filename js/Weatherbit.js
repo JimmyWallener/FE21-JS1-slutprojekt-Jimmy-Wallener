@@ -1,4 +1,4 @@
-export default class Connect {
+export default class Weatherbit {
   constructor(url, city, isCurrent, unit) {
     this.url = url;
     this.key = '2df59a20aa8a47db9391b14b2cae4fe3';

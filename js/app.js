@@ -1,4 +1,4 @@
-import Connect from './Connect.js';
+import Weatherbit from './Weatherbit.js';
 
 $(function () {
   // Setting up api to load at same time
@@ -6,8 +6,8 @@ $(function () {
     const currentUrl = 'https://api.weatherbit.io/v2.0/current';
     const dailyUrl = 'https://api.weatherbit.io/v2.0/forecast/daily';
 
-    let currentWeather = new Connect(currentUrl, city, true, unit);
-    let dailyWeather = new Connect(dailyUrl, city, false, unit);
+    let currentWeather = new Weatherbit(currentUrl, city, true, unit);
+    let dailyWeather = new Weatherbit(dailyUrl, city, false, unit);
 
     Promise.all([currentWeather.fetchApi(), dailyWeather.fetchApi()]).then(
       (data) => {
