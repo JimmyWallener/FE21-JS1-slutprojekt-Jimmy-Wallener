@@ -16,6 +16,7 @@ $(function () {
       }
     );
   };
+  getWeatherData('Stockholm,SE');
   // Depending on user selection on metric or imperial, function returns value based from ternary operator as object.
   const setUnit = (unit) => {
     const temp = unit === 'I' ? 'F' : unit === 'S' ? 'K' : '°C';
@@ -25,8 +26,6 @@ $(function () {
       _speed: speed,
     };
   };
-  // Setting a default city for cards
-  getWeatherData('Stockholm,SE');
 
   // Clickevent for search field
   $('#search').click((e) => {
@@ -34,14 +33,21 @@ $(function () {
 
     // Start with capturing user search input
     const city = $('#search-field').val();
-    $('#search-field').val('');
     const unit = $('input[name="unit"]:checked').val();
+
+    resetSearchFields();
 
     // If the input field holds value, fetch apidata
     if (!city == '') {
       getWeatherData(city, unit);
     }
   });
+
+  const resetSearchFields = () => {
+    $('#search-field').val('');
+    $('input[name="unit"]').prop('checked', false);
+  };
+
   const createWeatherCard = async (currentWeather, unit) => {
     // Deconstructing json fields
     const {
@@ -75,6 +81,8 @@ $(function () {
 
     $('#error-message').text('');
   };
+
+  // Creating the five day forecast cards
   const fiveDayForecast = async (forecast, unit) => {
     // Begin by removing previous <div> or it will multiply
     $('.daily').remove();
